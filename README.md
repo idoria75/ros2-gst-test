@@ -23,3 +23,12 @@ mkdir -p gst_ws/src/ && cd gst_ws
 ros2 pkg create ros2-gst-test --build-type ament_cmake --dependencies rclcpp std_msgs
 colcon build
 ```
+
+## Implementation plan
+
+- Implement prototype of service server and client using std_srvs SetBool
+- Implement logic to switch between 4 states: PAUSED or PLAYING, 600x400 or 400x400
+- Integrate GStreamer elements states PAUSED and playing fixed at 600x400
+- Integrate GStreamer elements to change between 600x400 and 400x400
+
+Two different services will be deployed because it may be useful to change only the resolution without changing the state. This also allows the server to deal with all the logic with regards to request handling. The client just needs to know the target state and receive confirmation. Also, multiple clients could be connected and making requests.

@@ -11,9 +11,11 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_srvs/srv/set_bool.hpp"
+// #include "std_srvs/srv/empty.hpp"
 
 // using namespace std::chrono_literals;
 using SetBool = std_srvs::srv::SetBool;
+// using Empty = std_srvs::srv::Empty;
 using std::placeholders::_1;
 using std::placeholders::_2;
 
@@ -23,21 +25,19 @@ public:
     ServerNode() : Node("server_node")
     {
         // Bind attaches the service call to the class method state_callback
-        // Placeholders
         state_srv_ = create_service<SetBool>("change_state", std::bind(&ServerNode::state_callback, this, _1, _2));
         resolution_srv_ = create_service<SetBool>("change_resolution", std::bind(&ServerNode::resolution_callback, this, _1, _2));
     }
 
 private:
     bool resolution_ = true; // True if 600x400, False if 400x400
-    bool state_ = 0;         // True if playing, False if paused
+    bool state_ = false;     // True if playing, False if paused
 
     rclcpp::Service<SetBool>::SharedPtr state_srv_;
     rclcpp::Service<SetBool>::SharedPtr resolution_srv_;
 
-    void state_callback(
-        const std::shared_ptr<SetBool::Request> request,
-        const std::shared_ptr<SetBool::Response> response)
+    void state_callback(const std::shared_ptr<SetBool::Request> request,
+                        const std::shared_ptr<SetBool::Response> response)
     {
         if (request->data != state_)
         {
@@ -47,17 +47,18 @@ private:
         }
         else
         {
-            std::string msg = "State did not change";
-            RCLCPP_INFO_STREAM(this->get_logger(), msg);
+            std::string msg = "State did not change.";
             response->success = false;
             response->message = msg;
+            RCLCPP_INFO_STREAM(this->get_logger(), msg << state_);
         }
     }
 
-    void resolution_callback(
-        const std::shared_ptr<SetBool::Request> request,
-        const std::shared_ptr<SetBool::Response> response)
+    void resolution_callback(const std::shared_ptr<SetBool::Request> request,
+                             const std::shared_ptr<SetBool::Response> response)
     {
+        // resolution_ = not(resolution_);
+        // RCLCPP_INFO_STREAM(this->get_logger(), "Resolution mode changed to: " << resolution_);
         if (request->data != resolution_)
         {
             resolution_ = request->data;
@@ -66,10 +67,10 @@ private:
         }
         else
         {
-            std::string msg = "Resolution did not change";
-            RCLCPP_INFO_STREAM(this->get_logger(), msg);
+            std::string msg = "Resolution did not change.";
             response->success = false;
             response->message = msg;
+            RCLCPP_INFO_STREAM(this->get_logger(), msg << resolution_);
         }
     }
 };
@@ -78,7 +79,7 @@ int main(int argc, char *argv[])
 {
     rclcpp::init(argc, argv);
 
-    std::shared_ptr<rclcpp::Node> node = std::make_shared<ServerNode>();
+    std::shared_ptr<ServerNode> node = std::make_shared<ServerNode>();
 
     RCLCPP_INFO_STREAM(node->get_logger(), "Server node up!");
 

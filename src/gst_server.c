@@ -1,6 +1,14 @@
 #include <gst/gst.h>
 #include <stdio.h>
 
+/*
+Inspired by this pipeline:
+gst-launch-1.0 -v videotestsrc ! x264enc tune=zerolatency bitrate=500 speed-preset=superfast ! rtph264pay ! udpsink port=5000 host=0.0.0.0
+
+To run:
+gcc gst_server.c -o gst_server `pkg-config --cflags --libs gstreamer-1.0` && ./gst_server
+*/
+
 int main(int argc, char *argv[])
 {
     GstElement *pipeline, *source, *udp_sink, *videoconvert, *x264enc, *rtph264pay;

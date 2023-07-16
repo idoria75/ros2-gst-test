@@ -1,6 +1,14 @@
 #include <gst/gst.h>
 #include <stdio.h>
 
+/*
+Inspired by this pipeline:
+gst-launch-1.0 -v udpsrc port=5000 ! "application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! decodebin ! videoconvert ! autovideosink sync=false
+
+To run:
+gcc gst_client.c -o gst_client `pkg-config --cflags --libs gstreamer-1.0` && ./gst_client
+*/
+
 // Custom callback function to handle messages from the GStreamer bus
 static gboolean bus_callback(GstBus *bus, GstMessage *message, gpointer data)
 {

@@ -11,11 +11,10 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_srvs/srv/set_bool.hpp"
-// #include "std_srvs/srv/empty.hpp"
 
-// using namespace std::chrono_literals;
+// #include <gst/gst.h>
+
 using SetBool = std_srvs::srv::SetBool;
-// using Empty = std_srvs::srv::Empty;
 using std::placeholders::_1;
 using std::placeholders::_2;
 

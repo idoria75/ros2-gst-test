@@ -13,6 +13,14 @@
   <depend>std_msgs</depend>
   <depend>std_srvs</depend>
 
+  <build_depend>gstreamer</build_depend>
+  <!-- <build_depend>gst-app</build_depend>
+  <build_depend>glib</build_depend> -->
+  
+  <exec_depend>gstreamer</exec_depend>
+  <!-- <exec_depend>gst-app</exec_depend>
+  <build_depend>glib</build_depend> -->
+
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
